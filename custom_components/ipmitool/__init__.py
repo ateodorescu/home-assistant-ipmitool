@@ -117,8 +117,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         config_entry_id=entry.entry_id,
         identifiers={(DOMAIN, unique_id)},
         name=data.name.title(),
-        manufacturer=data._device_info.device["product_manufacturer"],
-        model=data._device_info.device["product_part_number"],
+        manufacturer=data._device_info.device["manufacturer_name"],
+        model=data._device_info.device["product_name"],
         sw_version=data._device_info.device["firmware_revision"],
     )
 
