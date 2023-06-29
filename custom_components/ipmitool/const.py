@@ -30,10 +30,11 @@ PYIPMI_DATA = "data"
 PYIPMI_UNIQUE_ID = "unique_id"
 
 IPMI_DEV_INFO_TO_DEV_INFO: dict[str, str] = {
-    "product_manufacturer": ATTR_MANUFACTURER,
-    "product_part_number": ATTR_MODEL,
+    "manufacturer_name": ATTR_MANUFACTURER,
+    "product_name": ATTR_MODEL,
     "firmware_revision": ATTR_SW_VERSION,
 }
+
 
 USER_AVAILABLE_COMMANDS = "user_available_commands"
 

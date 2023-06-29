@@ -140,21 +140,21 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
 
 def _unique_id_from_status(device_info: IpmiDeviceInfo) -> str | None:
     """Find the best unique id value from the status."""
-    serial = device_info.device["product_serial"]
-    # We must have a serial for this to be unique
-    if not serial:
+    alias = device_info.alias
+    # We must have an alias for this to be unique
+    if not alias:
         return None
 
-    manufacturer = device_info.device["product_manufacturer"]
-    product_name = device_info.device["product_part_number"]
+    manufacturer = device_info.device["manufacturer_name"]
+    product_name = device_info.device["product_name"]
 
     unique_id_group = []
     if manufacturer:
         unique_id_group.append(manufacturer)
     elif product_name:
         unique_id_group.append(product_name)
-    if serial:
-        unique_id_group.append(serial)
+    if alias:
+        unique_id_group.append(alias)
     return "_".join(unique_id_group)
 
 @dataclass
@@ -165,6 +165,7 @@ class IpmiDeviceInfo:
     power_on: bool | False = False
     sensors: dict[str, str] = None
     states: dict[str, str] = None
+    alias: str = None
 
 class PyIpmiData:
     """Stores the data retrieved from IPMI.
@@ -226,6 +227,7 @@ class PyIpmiData:
                 info.power_on = json["power_on"]
                 info.sensors = json["sensors"]
                 info.states = json["states"]
+                info.alias = self._alias
                 self._device_info = info
             else:
                 _LOGGER.error(json["message"])
