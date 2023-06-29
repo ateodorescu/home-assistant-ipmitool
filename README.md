@@ -1,7 +1,7 @@
 # home-assistant-ipmitool
 IPMItool connector for Home Assistant
 
-Just copy the `custom_components` folder in your home assistant `config` folder. Restart HAAS and then add the `ipmitool` integration.
+Just copy the `custom_components` folder in your home assistant `config` folder. Restart HASS and then add the `ipmitool` integration.
 
 The integration depends on the `ipmi-server` addon that you can get from [here](https://github.com/ateodorescu/home-assistant-addons).
 Don't forget to start the addon before adding servers to the integration.
