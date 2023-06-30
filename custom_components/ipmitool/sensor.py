@@ -19,6 +19,7 @@ from homeassistant.const import (
     UnitOfElectricPotential,
     UnitOfTemperature,
     UnitOfPower,
+    UnitOfTime,
     REVOLUTIONS_PER_MINUTE
 )
 from homeassistant.core import HomeAssistant
@@ -163,6 +164,30 @@ async def async_setup_entry(
             )
         )
 
+    for id in status.sensors["time"]:
+        enabled = True
+        value = status.states[id]
+
+        if not value:
+            enabled = False
+
+        entities.append(
+            IPMISensor(
+                coordinator,
+                SensorEntityDescription(
+                    key=id,
+                    name=status.sensors ["time"][id],
+                    native_unit_of_measurement=UnitOfTime.SECONDS,
+                    device_class=SensorDeviceClass.DURATION,
+                    state_class=SensorStateClass.MEASUREMENT,
+                    # entity_category=EntityCategory.DIAGNOSTIC,
+                    entity_registry_enabled_default=enabled,
+                ),
+                data,
+                unique_id,
+            )
+        )
+
     entities.append(
         IPMISensor(
             coordinator,
@@ -177,7 +202,7 @@ async def async_setup_entry(
         )
     )
 
-    _LOGGER.error("Sensors added")
+    _LOGGER.info("Sensors added")
     async_add_entities(entities, True)
 
 
@@ -219,7 +244,7 @@ class IPMISensor(CoordinatorEntity[DataUpdateCoordinator[dict[str, str]]], Senso
 
     @property
     def native_value(self) -> str | None:
-        """Return entity state from ups."""
+        """Return entity state from server states."""
         status = self.coordinator.data
 
         if self.entity_description.key == KEY_STATUS:
